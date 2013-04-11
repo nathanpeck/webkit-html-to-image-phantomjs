@@ -1,6 +1,15 @@
 var page = require('webpage').create(),
     server = require('webserver').create();
     
+//Portion of the page being captured.
+page.clipRect = { top: 0, left: 0, width: 1024, height: 768 };
+
+//Size of the headless WebKit brower viewport.
+page.viewportSize = {width: 1024, height: 768};
+
+//Thumbnail reduction percentage.
+page.zoomFactor = 0.25;
+    
 function error(response,errorMessage)
 {
 	response.statusCode = 200;
