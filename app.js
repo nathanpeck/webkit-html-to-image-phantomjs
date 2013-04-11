@@ -1,14 +1,5 @@
-var page = require('webpage').create(),
+var Page = require('webpage'),
     server = require('webserver').create();
-    
-//Portion of the page being captured.
-page.clipRect = { top: 0, left: 0, width: 1024, height: 768 };
-
-//Size of the headless WebKit brower viewport.
-page.viewportSize = {width: 1024, height: 768};
-
-//Thumbnail reduction percentage.
-page.zoomFactor = 0.25;
     
 function error(response,errorMessage)
 {
@@ -28,7 +19,32 @@ service = server.listen(3000, function (request, response) {
 		{
 		  console.log("HTML body received");			
 		  
-		  console.log("Request completed")
+		  var page = Page.create();
+		  
+		  page.viewportSize = { width: 1024, height: 768 };
+		  			
+			console.log("Downloading");
+			page.setContent(request.post,'');
+			
+			page.evaluate(function() {
+		    document.body.bgColor = 'white';
+			});
+			
+			page.onLoadFinished = function(status) {
+				console.log("Rendering");
+//			imageData = page.renderBase64('JPEG');
+				page.render('test.png');
+				
+				response.statusCode = 200;
+			  response.headers = {
+			      'Cache': 'no-cache',
+			      'Content-Type': 'application/json'
+			  };
+			  response.write(JSON.stringify(request.headers,null,2));
+			  response.close();
+			  
+  		  console.log("Request completed")
+			};
 		}
 		else
 		{
