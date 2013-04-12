@@ -13,7 +13,12 @@ function error(response,errorMessage)
 }
 
 service = server.listen(3000, function (request, response) {
-	if(request.method == 'POST')
+	if(request.method == 'DIE')
+	{
+		console.log('Recieved a termination signal.');
+		phantom.exit();
+	}
+	else if(request.method == 'POST')
 	{
 		if(request.headers['Content-Type']=='text/html')
 		{
@@ -57,3 +62,12 @@ service = server.listen(3000, function (request, response) {
 	  error(response,"Usage: Send a POST body containing the HTML to render. Be sure to set the Content-Type header to text/html");
 	}
 });
+
+if(service) {
+  console.log('Phantom.js server running on port ' + server.port);
+}
+else
+{
+  console.log('Error: Could not create Phantom.js server listening on port ' + server.port);
+  phantom.exit();
+}
