@@ -8,7 +8,9 @@
     "url": "https://github.com/nathanpeck/webkit-html-to-image-phantomjs"
   },
   "dependencies": {
-	  "canvas": "*"
+	  "gm": 				"*",
+	  "express":		"*",
+	  "bunyan": 		"*"
   },
   "analyze": true,
   "license": "MIT",
